@@ -1,0 +1,19 @@
+<ion-content fullscreen="true">
+    <br>
+    <div>
+      
+        <ion-button (click)="home()">
+          <ion-icon slot="icon-only" name="home" ></ion-icon>
+        </ion-button>   
+    </div>
+    <h1>Clock-out</h1>
+    <ion-searchbar (ionChange)="onSearchTerm($event)" placeholder="Search Name"></ion-searchbar>
+  <br>
+    <ion-item (click)="clockout(staff.Staff_ID)" *ngFor="let staff of staffList">
+      <ion-thumbnail>
+        <img *ngIf="staff.Staff_Photo" [src]="staff.Staff_Photo">
+        <img *ngIf="!staff.Staff_Photo" src="assets/img/default-user.jpg">
+      </ion-thumbnail>
+       <ion-label>{{staff.Staff_Name}} {{staff.Staff_Surname}}</ion-label>
+    </ion-item>
+  </ion-content>

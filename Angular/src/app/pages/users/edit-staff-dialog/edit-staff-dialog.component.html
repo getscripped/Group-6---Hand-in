@@ -1,0 +1,94 @@
+<h1 mat-dialog-title><span *ngIf="!user">Add</span><span *ngIf="user.Staff.Staff_ID">Edit</span> Staff</h1>
+
+    <div class="user-img">
+        <label for="file" style="text-align:center;display: block;">Profile Photo</label>
+        <img *ngIf="user.Staff.Staff_Photo" [src]="user.Staff.Staff_Photo" class="transition-2" >
+          <img *ngIf="!user.Staff.Staff_Photo" src="assets/img/users/default-user.jpg" class="transition-2" ><br>
+        <input 
+            formControlName="Staff_Photo"
+            id="file" 
+            type="file" 
+            class="form-control"
+            (change)="onSelectedFile($event)">
+        
+    </div>
+<br>
+<div mat-dialog-content>
+    <form [formGroup]="form"  #ngForm="ngForm" >      
+        <mat-tab-group class="vertical-tabs">
+            
+            <mat-tab label="Personal" >
+                <div fxLayout="column" class="form-field-outer">
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="ID Number" formControlName="Staff_ID" [(ngModel)]="StaffEdit.Staff_ID" readonly>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Name" formControlName="Staff_Name" [(ngModel)]="StaffEdit.Staff_Name">
+                        <mat-error *ngIf="form.controls.Staff_Name.errors?.required">Staff Member's Name is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Name.errors?.maxlength">Maximum length of 30 characters</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Surname" formControlName="Staff_Surname" [(ngModel)]="StaffEdit.Staff_Surname" >
+                        <mat-error *ngIf="form.controls.Staff_Surname.errors?.required">Staff Member's Surname is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Surname.errors?.maxlength">Maximum length of 30 characters </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                            <mat-label>Date of Birth</mat-label>
+                            <input matInput [matDatepicker] ="picker"autocomplete="off" placeholder="MM/DD/YYYY" formControlName="Staff_DoB" type="text" [(ngModel)]="StaffEdit.Staff_DoB">
+                            <mat-error *ngIf="form.controls.Staff_DoB.errors?.required">Staff Member's Date of Birth is required </mat-error>
+                            <mat-datepicker-toggle matSuffix [for]="picker">
+                                </mat-datepicker-toggle>  
+                                <mat-datepicker #picker>
+                                <mat-error ></mat-error>   
+                                </mat-datepicker>        
+                         </mat-form-field>
+
+                     <mat-form-field class="w-100">
+                            <input matInput placeholder="Home Address" formControlName="Staff_Address" [(ngModel)]="StaffEdit.Staff_Address">
+                            <mat-error *ngIf="form.controls.Staff_Address.errors?.required">Staff Member's Address is required </mat-error>
+                            <mat-error *ngIf="form.controls.Staff_Address.errors?.maxlength">Maximum length of 100 characters</mat-error>
+                        </mat-form-field>
+                    
+                    
+                </div>
+            </mat-tab>
+           
+            <mat-tab label="Contact Number" >
+                <div fxLayout="column" class="form-field-outer">
+
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Phone" formControlName="Staff_Phone_Number" [(ngModel)]="StaffEdit.Staff_Phone_Number">
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.required">Contact Number is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.maxlength">Contact Number is invalid </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.minlength">Contact Number is invalid </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+           
+           <!-- <mat-tab label="Status" formGroupName="settings">
+                <div fxLayout="column" class="form-field-outer">
+                    <!--  Add NGfor here for skills   --> 
+                    <!--<mat-checkbox formControlName="isActive">Active</mat-checkbox>
+                    <mat-checkbox formControlName="isDeleted">Blocked</mat-checkbox>
+                    
+                </div>
+            </mat-tab>-->
+   
+            <mat-tab label="Skills" *ngIf="Skill.length > 0">
+                <div fxLayout="column" class="form-field-outer" *ngFor="let skill of Skill; let i=index " >
+                    <!--  Add NGfor here for skills   -->
+                    <p>
+                        <mat-checkbox  [value]="skill.SkillID"
+                         (change)="checkedSkills(skill.Skill_ID, $event)"
+                         [checked]="ifChecked(skill.Skill_ID)"> {{skill.Skill_Description}}</mat-checkbox>
+                    </p>
+                </div>
+            </mat-tab>
+                </mat-tab-group>
+            </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button type="submit" color="primary" [mat-dialog-close]="" (click)="ConfirmEditStaff()" [disabled]="!form.valid">Update</button>
+    <button mat-raised-button color="warn" (click)="CancelUpdateStaff()">Cancel</button>
+</div>

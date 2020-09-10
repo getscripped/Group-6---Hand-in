@@ -1,0 +1,47 @@
+.mat-column-is_Active {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 5% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  mat-header-cell{
+    background-color: rgb(48,139,48);
+    font-size: 16px;
+}
+
+mat-card{
+  max-width: 600px;
+  margin-left:22%;
+
+}
+.description{
+  width: 90%;
+}
+
+.p-0{
+      height: 70%;
+      position: fixed;
+      overflow: auto;
+  }
+
+  .endButton{
+    width:25%;
+    margin-left: auto;
+  }
+ .otherbutton{
+    width:25%; 
+ }
+
+ .assignStaff{
+   width:40%;
+ }

@@ -1,0 +1,89 @@
+// body,html{
+//     height:100%;
+// }
+// .bgrd{
+//     background-image: url('../../assets/img/OIP (1).jpg');
+//     height: auto;
+//     width: 100%;
+//     background-position: center;
+//     background-repeat: no-repeat;
+//     background-size: contain;
+// }
+.mat-column-is_Active {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 5% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  h1{
+      text-align: center;
+      
+  }
+
+  .endButton{
+    width:25%;
+    margin-left: auto;
+  }
+ .otherbutton{
+    width:25%; 
+ }
+
+  #provideLabel{
+      text-align: center;
+      font-size: 14px;
+      margin-left: 38.5%;
+  }
+
+  .labelCenter{
+    text-align: center;
+    font-size: 14px;
+   
+  }
+  mat-card{
+      max-width: 600px;
+      margin-left:22%;
+
+  }
+  .skillLabel{
+    font-size: 14px;
+  }
+  mat-header-cell{
+      background-color: rgb(48, 139, 48);
+      font-size: 16px;
+  }
+  mat-card-header{
+      text-align: left;
+  }
+
+ .description{
+     width: 90%;
+ }
+
+ .skills{
+     width: 50%;
+ }
+
+  .p-0{
+      height: 70%;
+      position: fixed;
+      overflow: auto;
+  }
+
+//  .bg-primary{
+//      position: fixed;
+//      width: 40%;
+//      overflow: hidden;
+//  }
+//  .addForm{
+//     position: absolute; 
+//     top: 100px;
+//  }

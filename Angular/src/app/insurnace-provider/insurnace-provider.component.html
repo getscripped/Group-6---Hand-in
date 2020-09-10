@@ -1,0 +1,150 @@
+<!-- <button mat-raised-button color="primary" (click) = "addInsurance()" class="m-1">Add New</button> -->
+
+<div fxLayout="column">
+    <div class="flex-p" *ngIf = "showtable"> 
+        <div fxLayout="column" class="mat-elevation-z8" >           
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">       
+            <ng-container matColumnDef="IP_ID">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.IP_ID}} </mat-cell>
+            </ng-container>         
+            <ng-container matColumnDef="IP_Name">
+                <mat-header-cell *matHeaderCellDef> Name </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.IP_Name}} </mat-cell>
+            </ng-container>     
+            <ng-container matColumnDef="IP_Reg_Number">
+                <mat-header-cell *matHeaderCellDef> Registration Number </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.IP_Reg_Number}} </mat-cell>
+            </ng-container>        
+            <ng-container matColumnDef="IP_VAT_Number">
+                <mat-header-cell *matHeaderCellDef> VAT Number </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.IP_VAT_Number}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="IP_Phone_Number">
+                <mat-header-cell *matHeaderCellDef> Phone Number </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.IP_Phone_Number}} </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15, 20]"></mat-paginator>      
+    </div>
+</div>
+<br>
+
+<ng-container *ngIf="show">
+<form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="putInsurance()" [formGroup] = "form" [ngModelOptions]="{standalone: true}">
+
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">    
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="InsuranceEdit.IP_Name" name="Name" required formControlName ="Name" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf = "form.controls.Name.errors?.required">Insurance Provider Name is required</mat-error>
+                <mat-error *ngIf = "form.controls.Name.errors?.maxlength">Insurance Provider Name cannot exceed 50 charachters</mat-error>
+            </mat-form-field> 
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">        
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <input matInput placeholder="Reg_Num" [(ngModel)]="InsuranceEdit.IP_Reg_Number" name="Reg_Num" required formControlName = "RegNum" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf = "form.controls.RegNumber.errors?.required">Registration Number is required</mat-error>
+                <mat-error *ngIf = "form.controls.RegNumber.errors?.maxlength">Registration Number cannot exceed 50 charachters</mat-error>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">        
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <input matInput placeholder="VAT" [(ngModel)]="InsuranceEdit.IP_VAT_Number" name="VAT" required formControlName = "VAT" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf = "form.controls.VATNumber.errors?.required">VAT Number is required</mat-error>
+                <mat-error *ngIf = "form.controls.VATNumber.errors?.maxlength">VAT Number cannot exceed 50 charachters</mat-error>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">    
+        </mat-card-header>
+        <mat-card-content fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <input matInput placeholder="Phone_Num" [(ngModel)]="InsuranceEdit.IP_Phone_Number" name="Phone_Num" required formControlName = "PhoneNum" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf = "form.controls.PhoneNumber.errors?.required">Phone Number is required</mat-error>
+                <mat-error *ngIf = "form.controls.PhoneNumber.errors?.maxlength">Phone Number cannot exceed 10 charachters</mat-error>
+            </mat-form-field>
+        </mat-card-content>
+    </mat-card>
+    
+    <button mat-raised-button color="primary" class="m-1">Save Changes</button>
+  </form>
+  <button mat-raised-button color="primary" class="m-1" (click)="showTable()">Back</button>
+</ng-container>
+
+<ng-container *ngIf="showAdd">
+    <form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="putInsurance()" [formGroup] = "form" [ngModelOptions]="{standalone: true}">
+    
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">    
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field>
+                    <input matInput placeholder="Name" [(ngModel)]="InsuranceaAdd.IP_Name" name="Name" required formControlName = "Name" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.Name.errors?.required">Insurance Provider Name is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Name.errors?.maxlength">Insurance Provider Name cannot exceed 50 charachters</mat-error>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">        
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field>
+                    <input matInput placeholder="Reg_num" [(ngModel)]="InsuranceaAdd.IP_Reg_Number" name="Reg_num" required formControlName = "RegNum" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.RegNumber.errors?.required">Registration Number is required</mat-error>
+                    <mat-error *ngIf = "form.controls.RegNumber.errors?.maxlength">Registration Number cannot exceed 50 charachters</mat-error>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">                
+               
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field>
+                    <input matInput placeholder="VAT_num" [(ngModel)]="InsuranceaAdd.IP_VAT_Number" name="VAT_num" required formControlName = "VAT" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.VATNumber.errors?.required">VAT Number  is required</mat-error>
+                    <mat-error *ngIf = "form.controls.VATNumber.errors?.maxlength">VAT Number cannot exceed 50 charachters</mat-error>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">     
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field>
+                    <input matInput placeholder="Phone" [(ngModel)]="InsuranceaAdd.IP_Phone_Number" name="Phone" required formControlName = "PhoneNum" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.PhoneNumber.errors?.required">Phone Number is required</mat-error>
+                    <mat-error *ngIf = "form.controls.PhoneNumber.errors?.maxlength">Phone Number cannot exceed 10 charachters</mat-error>
+                </mat-form-field>
+            </mat-card-content>
+        </mat-card>
+    
+        <button mat-raised-button color="primary" class="m-1">Save</button>
+      </form>
+      <button mat-raised-button color="primary" class="m-1" (click)="showTable()">Back</button>
+    </ng-container>

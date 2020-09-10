@@ -1,0 +1,39 @@
+.tool {
+  margin:0px;
+  padding: 0px;
+  white-space: nowrap;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 2;
+  width: 100% !important;
+}
+
+.side{
+  width: 950px;
+  min-width: 304px;
+  height: 100%;
+  opacity: 100%;
+  color:none;
+  background:transparent;
+}
+
+#name{
+  font-size: larger;
+  font-weight: bolder;
+  color:white !important;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: green($color: #000000);
+}
+
+.mat-drawer-container{
+  color: none;
+  opacity: 100%;
+}
+
+.mat-drawer-backdrop{
+  color: none;
+  opacity: 100%;
+  background:transparent;
+}

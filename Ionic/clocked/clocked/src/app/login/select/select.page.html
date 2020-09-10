@@ -1,0 +1,15 @@
+<ion-content class ="selectFarm">
+  <br>
+  <h1>Select Farm </h1>
+ 
+  <ion-select class="selection" placeholder="Farm sign-in" 
+   required [(value)]="farmName" [(ngModel)]="FarmSelect.Farm_ID">
+    <ion-select-option *ngFor="let farm of farmList" [value]="farm.Farm_ID">{{farm.Farm_Name}}</ion-select-option>
+  </ion-select><br>
+  <ion-button class="continue" (click)="home()">Continue</ion-button>
+
+  <div id="container" class="image">
+      <img src="assets/img/agrilog.png">
+    </div>
+
+</ion-content>

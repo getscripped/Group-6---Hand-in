@@ -1,0 +1,19 @@
+<ion-content fullscreen="true">
+    <br>
+    <div>
+      
+        <ion-button (click)="home()">
+          <ion-icon slot="icon-only" name="home" ></ion-icon>
+        </ion-button>   
+    </div>
+    <h1>Welcome {{staffName}} {{staffSurname}}</h1>
+    
+    <div class="buttons">
+      <ion-button class="buttonclass" (click)="tasks()">Tasks</ion-button>
+      <ion-button class="buttonclass" (click)="faults()">Faults</ion-button>
+      <ion-button class="buttonclass" (click)="maintenances()">Maintenance</ion-button>
+    </div>
+   
+
+      
+</ion-content>

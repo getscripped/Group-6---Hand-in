@@ -1,0 +1,14 @@
+<mat-dialog-content>
+    <h1>Assign Staff Members to Fault</h1>
+    <div *ngFor="let staff of staffList">
+        <mat-checkbox
+        (change)="checkedStaff(staff.Staff_ID,staff,$event)">
+        {{staff.Staff_Name}} {{staff.Staff_Surname}} </mat-checkbox> <br> 
+    </div>
+    <div *ngFor="let staff of staffArray">
+        <mat-label >{{staff.Staff_Name}} {{staff.Staff_Surname}}</mat-label>
+    </div>
+    <div>
+        <button  color="primary" (outputChild)="staffArray" [mat-dialog-close]="true" (click)="select()">Assign</button>
+    </div>
+</mat-dialog-content>

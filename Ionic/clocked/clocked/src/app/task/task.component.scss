@@ -1,0 +1,33 @@
+h1{
+    text-align: center;
+}
+.buttons{
+   text-align: center;
+}
+.buttonclass{
+    width: 50%;
+}
+
+ion-grid{
+    width: 95%;
+    margin-left: 2%;
+    border: 1pt solid white;
+}
+
+ion-checkbox{
+    border: 0.25pt solid white;
+    
+}
+
+.cell-heading{
+    background-color: var(--ion-color-primary);
+    
+}
+.status{
+    margin-left: 10%;
+}
+
+.backButton{
+    width: 100pt;
+    height: 20pt;
+}

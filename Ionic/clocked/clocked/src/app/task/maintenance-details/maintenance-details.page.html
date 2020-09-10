@@ -1,0 +1,38 @@
+<ion-content>
+    <br>
+          
+        <ion-button class="home" (click)="home()">
+          <ion-icon  slot="icon-only" name="home" ></ion-icon>
+        </ion-button>   
+    
+    <h1 class="heading">Maintenance Details</h1>
+        <div >
+            <ion-item >
+              <ion-label class="labelLong" >Maintenance Description:</ion-label>
+              <ion-label class="MaintDetails">{{mainDetails.Maintenance_Description}}</ion-label>
+              </ion-item>
+              <ion-item>
+              <ion-label>Section:</ion-label>
+              <ion-label class="MaintDetails">{{mainDetails.Section_Name}}</ion-label><br>
+            </ion-item>
+            <ion-item>
+              <ion-label>Infrastructure:</ion-label>
+              <ion-label class="MaintDetails">{{mainDetails.Infrastructure_Name}}</ion-label><br>
+              </ion-item>
+              <ion-item>
+              <ion-label>Equipment:</ion-label>
+              <ion-label class="MaintDetails">{{mainDetails.Equipment_Description}}</ion-label><br>
+            </ion-item>
+            <ion-item>
+                <ion-label class="labelLong">Maintenance Type:</ion-label>
+                <ion-label class="MaintDetails">{{mainDetails.MT_Description}}</ion-label><br>
+              </ion-item>
+            <ion-item>
+              <ion-label>Importance:</ion-label>
+              <ion-label class="MaintDetails">{{mainDetails.Importance_Description}}</ion-label><br>
+            </ion-item>
+            <ion-button class="backButton" (click)="back()">Back</ion-button>
+          </div>
+    
+      </ion-content>
+    

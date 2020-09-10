@@ -1,0 +1,24 @@
+<ion-content fullscreen="true">
+  <br>
+  <div>
+    
+      <ion-button (click)="home()">
+        <ion-icon slot="icon-only" name="home" ></ion-icon>
+      </ion-button>   
+  </div>
+  <h1>Clock-in</h1>
+  <ion-searchbar (ionChange)="onSearchTerm($event)" placeholder="Search Name"></ion-searchbar>
+  
+<br>
+<div *ngFor="let staff of StaffList">
+  <ion-item (click)="clockin(staff.Staff_ID, staff)" >
+    <ion-thumbnail>
+      <img *ngIf="staff.Staff_Photo" [src]="staff.Staff_Photo">
+      <img *ngIf="!staff.Staff_Photo" src="assets\img\default-user.jpg">
+    </ion-thumbnail>
+     <ion-label>
+       {{staff.Staff_Name}} {{staff.Staff_Surname}}
+     </ion-label>
+     </ion-item>
+    </div>
+</ion-content>

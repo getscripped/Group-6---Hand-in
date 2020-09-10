@@ -1,0 +1,63 @@
+.mat-column-is_Active {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 5% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+  h1{
+    text-align: center;
+}
+
+mat-header-cell{
+  background-color: rgb(48, 139, 48);
+  font-size: 16px;
+}
+#provideLabel{
+  text-align: center;
+  font-size: 14px;
+  margin-left: 43%;
+}
+mat-card{
+  width:70%;
+  align-items: center;
+  margin-left:15%;
+
+}
+#endButton{
+  width: 15%;
+  margin:0%; 
+  align-items: center;
+
+}
+mat-table{
+  max-width: 400px;
+  margin-left: 35%;
+  table-layout: fixed;
+  //display: ;
+  //flex-flow: row wrap;
+  
+
+}
+mat-paginator{
+  max-width: 400px;
+margin-left: 35%;
+}
+.search{
+  max-width: 400px;
+  width:50%; 
+margin-left: 35%;
+}
+
+.addVT{
+  margin-left:35%;
+  border-radius: 10px;
+}

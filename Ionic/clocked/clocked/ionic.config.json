@@ -1,0 +1,8 @@
+{
+  "name": "clocked",
+  "integrations": {
+    "capacitor": {},
+    "cordova": {}
+  },
+  "type": "angular"
+}

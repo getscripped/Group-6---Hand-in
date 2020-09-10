@@ -1,0 +1,39 @@
+<ion-content>
+    <br>
+          
+        <ion-button class="home" (click)="home()">
+          <ion-icon  slot="icon-only" name="home" ></ion-icon>
+        </ion-button>   
+    
+    <h1 class="heading">Fault Details</h1>
+        <div >
+            <ion-item >
+              <ion-label class="labelLong">Fault Description:</ion-label>
+              <ion-label class="FaultDetails">{{faultDetails.Fault_Description}}</ion-label>
+              </ion-item>
+              <ion-item>
+              <ion-label>Section:</ion-label>
+              <ion-label class="FaultDetails">{{faultDetails.Section_Name}}</ion-label><br>
+            </ion-item>
+            <ion-item>
+              <ion-label>Infrastructure:</ion-label>
+              <ion-label class="FaultDetails">{{faultDetails.Infrastructure_Name}}</ion-label><br>
+              </ion-item>
+              <ion-item>
+              <ion-label>Equipment:</ion-label>
+              <ion-label class="FaultDetails">{{faultDetails.Equipment_Description}}</ion-label><br>
+            </ion-item>
+            <ion-item>
+                <ion-label>Fault Type:</ion-label>
+                <ion-label class="FaultDetails">{{faultDetails.FT_Description}}</ion-label><br>
+              </ion-item>
+            
+            <ion-item>
+              <ion-label>Importance:</ion-label>
+              <ion-label class="FaultDetails">{{faultDetails.Importance_Description}}</ion-label><br>
+            </ion-item>
+            <ion-button class="backButton" (click)="back()">Back</ion-button>
+          </div>
+    
+      </ion-content>
+    

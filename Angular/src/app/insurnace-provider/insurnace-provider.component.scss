@@ -1,0 +1,31 @@
+.mat-column-is_Active {
+    word-wrap: break-word !important;
+    white-space: unset !important;
+    flex: 0 0 5% !important;
+    width: 28% !important;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+  
+    word-break: break-word;
+  
+    -ms-hyphens: auto;
+    -moz-hyphens: auto;
+    -webkit-hyphens: auto;
+    hyphens: auto;
+  }
+
+  mat-header-cell{
+    background-color: rgb(48, 139, 48);
+    font-size: 16px;
+}
+
+mat-card{
+    width: 70%;
+    align-items: center;
+    margin-left: 15%;
+}
+
+.m-1{
+ color: green;
+  background-color:rgb(51, 49, 49);
+}

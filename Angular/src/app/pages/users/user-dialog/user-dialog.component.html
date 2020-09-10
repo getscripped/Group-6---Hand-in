@@ -1,0 +1,101 @@
+<h1 mat-dialog-title><span>Add</span> Staff</h1>
+<!-- <div class="user-img">
+        <img *ngIf="user.Staff.Staff_Photo" [src]="user.Staff.Staff_Photo" class="transition-2" [class.blocked]="user.Staff.Is_Active">
+        <img  src="assets/img/users/default-user.jpg" class="transition-2" ><br>
+        <input style="display: none" type="file" (change)="onFileChanged($event)">
+        <button (click)="fileInput.click()">Select Picture</button> 
+    </div> -->
+    <div class="user-img">
+      <label for="file" style="text-align:center;display: block;">Profile Photo</label>
+      <img *ngIf="imageSrc" [src]="imageSrc" class="transition-2" >
+        <img *ngIf="!imageSrc" src="assets/img/users/default-user.jpg" class="transition-2" ><br>
+      <input 
+          formControlName="Staff_Photo"
+          id="file" 
+          type="file" 
+          class="form-control"
+          (change)="onSelectedFile($event)">
+      
+  </div>
+  
+<br>
+<div mat-dialog-content>
+    <form [formGroup]="form"  #ngForm="ngForm">      
+        <mat-tab-group class="vertical-tabs">
+            
+            <mat-tab label="Personal" >
+                <div fxLayout="column" class="form-field-outer">
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="ID Number" formControlName="Staff_ID" (keypress)="omit_special_char_Let($event)" [(ngModel)]="NewStaff.Staff_ID"  maxlength="13">
+                        <mat-error *ngIf="form.controls.Staff_ID.errors?.required">Staff Member's ID Number is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_ID.errors?.maxlength">ID Number is invalid </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_ID.errors?.minlength">ID Number is invalid </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Name" formControlName="Staff_Name" (keypress)="omit_special_char($event)"  [(ngModel)]="NewStaff.Staff_Name" >
+                        <mat-error *ngIf="form.controls.Staff_Name.errors?.required">Staff Member's Name is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Name.errors?.maxlength">Maximum length of 30 characters</mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Surname" formControlName="Staff_Surname" (keypress)="omit_special_char($event)"  [(ngModel)]="NewStaff.Staff_Surname">
+                        <mat-error *ngIf="form.controls.Staff_Surname.errors?.required">Staff Member's Surname is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Surname.errors?.maxlength">Maximum length of 30 characters </mat-error>
+                    </mat-form-field>
+                    <mat-form-field class="w-100">
+                        <mat-label>Date of Birth</mat-label>
+                        <input matInput [matDatepicker] ="picker"autocomplete="off"  placeholder="MM/DD/YYYY" formControlName="Staff_DoB" type="text" [(ngModel)]="NewStaff.Staff_DoB">
+                        <mat-error *ngIf="form.controls.Staff_DoB.errors?.required">Staff Member's Date of Birth is required </mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                            </mat-datepicker-toggle>  
+                            <mat-datepicker #picker>
+                            <mat-error ></mat-error>   
+                            </mat-datepicker>        
+                     </mat-form-field>
+
+                     <mat-form-field class="w-100">
+                            <input matInput placeholder="Home Address" formControlName="Staff_Address" (keypress)="omit_special_char($event)" [(ngModel)]="NewStaff.Staff_Address">
+                            <mat-error *ngIf="form.controls.Staff_Address.errors?.required">Staff Member's Address is required </mat-error>
+                            <mat-error *ngIf="form.controls.Staff_Address.errors?.maxlength">Maximum length of 100 characters</mat-error>
+                        </mat-form-field>
+                    
+                    
+                </div>
+            </mat-tab>
+           
+            <mat-tab label="Contact Number" >
+                <div fxLayout="column" class="form-field-outer">
+
+                    <mat-form-field class="w-100">
+                        <input matInput placeholder="Phone" formControlName="Staff_Phone_Number" [(ngModel)]="NewStaff.Staff_Phone_Number" (keypress)="omit_special_char($event)" maxlength="10">
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.required">Contact Number is required </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.maxlength">Contact Number is invalid </mat-error>
+                        <mat-error *ngIf="form.controls.Staff_Phone_Number.errors?.minlength">Contact Number is invalid </mat-error>
+                    </mat-form-field>
+
+                </div>
+            </mat-tab>
+           
+           <!-- <mat-tab label="Status" formGroupName="settings">
+                <div fxLayout="column" class="form-field-outer">
+                    <!--  Add NGfor here for skills   --> 
+                    <!--<mat-checkbox formControlName="isActive">Active</mat-checkbox>
+                    <mat-checkbox formControlName="isDeleted">Blocked</mat-checkbox>
+                    
+                </div>
+            </mat-tab>-->
+   
+    <mat-tab label="Skills" >
+        <div fxLayout="column" class="form-field-outer" *ngFor="let skill of Skill let i=index" >
+            <!--  Add NGfor here for skills   --> 
+            <p [(value)]="value">
+                <input type="checkbox" [value]="skill.Skill_ID" (change)="checkedSkills(skill.Skill_ID, skill)" id={{skill.Skill_ID}} > {{skill.Skill_Description}}
+            </p>
+        </div>
+    </mat-tab>
+        </mat-tab-group>
+    </form>
+</div>
+<div mat-dialog-actions fxLayout="row" fxLayoutAlign="space-between center">
+    <button mat-raised-button type ="submit" color="primary" (click)="ConfirmAddStaff()" [mat-dialog-close]="form.value" [disabled]="!form.valid">Save</button>
+    <button mat-raised-button color="warn" (click)="CancelAddStaff()">Cancel</button>
+</div>

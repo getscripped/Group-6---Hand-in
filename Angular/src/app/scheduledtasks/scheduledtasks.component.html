@@ -1,0 +1,244 @@
+<h1>Scheduled Tasks</h1>
+<div *ngIf="showtable">
+<button mat-raised-button color="primary" (click) = "AddScheduledTask()" class="m-1">Schedule Task</button>
+<button mat-raised-button color="primary" (click) = "sendSchedules()" class="m-1">Send Daily Schedules</button>
+<button mat-raised-button color="primary" (click) = "Download()" class="m-1">Generate Daily Schedules</button>
+
+<div fxLayout="column">
+    <div class="flex-p"> 
+        <div fxLayout="column" class="mat-elevation-z8">  
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">       
+            <ng-container matColumnDef="Schedule_ID">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Schedule_ID}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Day_Description">
+                <mat-header-cell *matHeaderCellDef> Day of Week </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Day_Description}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Schedule_Start_Date">
+                <mat-header-cell *matHeaderCellDef> Start Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Schedule_Start_Date | date}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Schedule_End_Date">
+                <mat-header-cell *matHeaderCellDef> End Date </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Schedule_End_Date | date}} </mat-cell>
+            </ng-container>       
+            <ng-container matColumnDef="Task_Description">
+                <mat-header-cell *matHeaderCellDef> Task </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Task_Description}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Staff_Name">
+                <mat-header-cell *matHeaderCellDef> Staff Assigned </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Staff_Name}} </mat-cell>
+            </ng-container>        
+            <ng-container matColumnDef="Status_Description">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Status_Description}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element" >
+                    <button mat-fab class="m-1" style="color: green; background-color:rgb(51, 49, 49)" (click) ='getScheduledTaskDetail(element.Schedule_ID)'>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-fab class="m-1" style="color: red; background-color: rgb(51, 49, 49);" (click)="deleteScheduledTask(element.Schedule_ID)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+               </mat-cell>
+            </ng-container>
+
+            
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]"></mat-paginator>      
+    </div>
+</div>
+</div>
+<br>
+
+<ng-container *ngIf="show">
+    <mat-card class="p-0" >  
+        <div class="bg-primary text-center py-1">    
+        <h1>Edit Scheduled Task: </h1>
+        </div>
+        <form class="addForm" [formGroup]="form" ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate fxLayout="row wrap" >
+           <mat-label id="provideLabel" fxLayoutAlign="center">Please provide the following details:</mat-label>
+
+    <mat-card-content fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1" fxLayoutGap>
+        <section class="example-section">
+                        <mat-checkbox (change)="onChangeRecurring()" class="example-margin"  [(ngModel)]="recurring" name="recurring" [ngModelOptions]="{standalone: true}">Schedule task to reoccur over a specified time period: </mat-checkbox>
+        </section>
+                    </mat-card-content>
+
+            <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap *ngIf="recurring">
+                <mat-form-field appearance="outline" >
+                    <mat-label>Day of Week</mat-label>
+                    <mat-select placeholder="Select a Day" (ngModelChange)="onChangeDay($event)" [(ngModel)]="ScheduledTaskEdit.Day_ID" name="day_Description" formControlName = "day_Description" required [ngModelOptions]="{standalone: true}"> 
+                        <mat-option *ngFor="let day of days" [value]="day.Day_ID">
+                            {{day.Day_Description}}
+                        </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="form.controls.day_Description.errors?.required">Day of week selection is required </mat-error> -->
+                </mat-form-field>
+            </div>
+    
+            <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap>
+                <mat-form-field appearance="outline">
+                <mat-label *ngIf="recurring">Choose a start date</mat-label>
+                <mat-label *ngIf="!recurring">Choose a date</mat-label>
+                <input matInput [matDatepicker]="addStartDatePicker" [(ngModel)]="ScheduledTaskEdit.Schedule_Start_Date" (ngModelChange)="onChangeStartDate($event)" placeholder="Select a date"  name="start_Date" formControlName = "start_Date" required  [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="form.controls.start_Date.errors?.required">Schedule task start date is required, please use the datepicker to the right to select a date!</mat-error>
+                <mat-datepicker-toggle matSuffix [for]="addStartDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #addStartDatePicker></mat-datepicker>
+              </mat-form-field>                                 
+</div>
+
+<div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap >
+    <mat-form-field appearance="outline" *ngIf="recurring" >
+                <mat-label>Choose an end date</mat-label>
+                <input matInput [matDatepicker]="addEndDatePicker" [(ngModel)]="ScheduledTaskEdit.Schedule_End_Date" (ngModelChange)="onChangeEndDate($event)" placeholder="Select a date"  name="end_Date" formControlName = "end_Date" required [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="form.controls.end_Date.errors?.required">Schedule task end date is required, please use the datepicker to the right to select a date!</mat-error>
+                <mat-datepicker-toggle matSuffix [for]="addEndDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #addEndDatePicker></mat-datepicker>
+              </mat-form-field>
+</div>
+
+    <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap >
+        <mat-form-field appearance="outline" >
+            <mat-label>Select a task</mat-label>
+                    <mat-select placeholder="Select a task" (ngModelChange)="onChangeTask($event)" [(ngModel)]="ScheduledTaskEdit.Task_ID" [disabled]="disableTask"  name="task_Description" formControlName = "task_Description" required [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let task of tasks" [value]="task.Task_ID">
+                            {{task.Task_Description}}
+                        </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="form.controls.task_Description.errors?.required">Task selection is required </mat-error> -->
+                </mat-form-field>
+            </div>
+
+    <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap>
+        <mat-form-field appearance="outline">
+            <mat-label>Assign the task to a staff member</mat-label>
+            <mat-select placeholder="Select staff" [(ngModel)]="ScheduledTaskEdit.Staff_ID" name="staff_Name" formControlName = "staff_Name" [disabled]="disableStaff" required [ngModelOptions]="{standalone: true}">
+                <option value="" disabled selected>Choose</option>
+                <mat-option *ngFor="let member of staff" [value]="member.Staff_ID">
+                    {{member.Staff_Name}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="form.controls.staff_Name.errors?.required">Staff selection is required </mat-error> -->
+        </mat-form-field>
+    </div>
+    <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap>
+        <mat-form-field appearance="outline">
+            <mat-label>Change the status of the task here: </mat-label>
+            <mat-select placeholder="Select Status" [(ngModel)]="ScheduledTaskEdit.Status_ID" name="status_Description" formControlName = "status_Description" required [ngModelOptions]="{standalone: true}">
+                <option value="" disabled selected>Choose</option>
+                <mat-option *ngFor="let status of statusses" [value]="status.Status_ID">
+                    {{status.Status_Description}}
+                </mat-option>
+            </mat-select>
+            <!-- <mat-error *ngIf="form.controls.staff_Name.errors?.required">Staff selection is required </mat-error> -->
+        </mat-form-field>
+    </div>
+
+    
+    <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+        <button mat-raised-button color="primary" (click)="ConfirmEditST()" class="endButton">Save</button>
+    </div>
+    <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+      <button mat-raised-button color="m-1" (click)="CancelEditST()" class="m-1">Back</button>
+      </div>
+    </form>
+    </mat-card>
+    </ng-container>
+
+<ng-container *ngIf="showAdd">
+    <mat-card class="p-0" >  
+    <div class="bg-primary text-center py-1">    
+    <h1>Schedule a new task: </h1>
+    </div>
+    <form class="addForm" [formGroup]="form" ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate fxLayout="row wrap" >
+       <mat-label id="provideLabel" fxLayoutAlign="center">Please provide the following details:</mat-label>   
+
+       <mat-card-content fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1" fxLayoutGap>
+        <section class="example-section">
+                        <mat-checkbox (change)="onChangeRecurring()" class="example-margin" [(ngModel)]="once" [(ngModel)]="recurring" name="recurring" [ngModelOptions]="{standalone: true}">Schedule task to reoccur over a specified time period: </mat-checkbox>
+        </section>
+                    </mat-card-content>
+
+            <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap >
+                <mat-form-field appearance="outline" >
+                    <mat-label>Day of Week</mat-label>
+                    <mat-select placeholder="Select a Day" (ngModelChange)="onChangeDay()" [(ngModel)]="ScheduledTaskAdd.Day_ID" name="day_Description" formControlName = "day_Description" required [ngModelOptions]="{standalone: true}"> 
+                        <mat-option *ngFor="let day of days" [value]="day.Day_ID">
+                            {{day.Day_Description}}
+                        </mat-option>
+                    </mat-select>
+                    <!-- <mat-error *ngIf="form.controls.day_Description.errors?.required">Day of week selection is required </mat-error> -->
+                </mat-form-field>
+            </div>
+    
+            <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap>
+                <mat-form-field appearance="outline">
+                <mat-label *ngIf="recurring">Choose a start date</mat-label>
+                <mat-label *ngIf="!recurring">Choose a date</mat-label>
+                <input matInput [matDatepicker]="addStartDatePicker" [(ngModel)]="ScheduledTaskAdd.Schedule_Start_Date" (ngModelChange)="onChangeStartDate()" placeholder="Select a date"  name="start_Date" formControlName = "start_Date" required  [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf="form.controls.start_Date.errors?.required">Schedule task start date is required, please use the datepicker to the right to select a date!</mat-error>
+                <mat-datepicker-toggle matSuffix [for]="addStartDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #addStartDatePicker></mat-datepicker>
+              </mat-form-field>                                 
+</div>
+
+<div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap *ngIf="recurring">
+    <mat-form-field appearance="outline"  >
+                <mat-label>Choose an end date</mat-label>
+                <input matInput [matDatepicker]="addEndDatePicker" [(ngModel)]="ScheduledTaskAdd.Schedule_End_Date" (ngModelChange)="onChangeEndDate()" placeholder="Select a date"  name="end_Date" formControlName = "end_Date" [ngModelOptions]="{standalone: true}">
+                 <mat-error *ngIf="form.controls.end_Date.errors?.required">Schedule task end date is required, please use the datepicker to the right to select a date!</mat-error> 
+                <mat-datepicker-toggle matSuffix [for]="addEndDatePicker"></mat-datepicker-toggle>
+                <mat-datepicker #addEndDatePicker></mat-datepicker>
+              </mat-form-field>
+</div>
+
+<div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap >
+    <mat-form-field appearance="outline" >
+        <mat-label>Select a task</mat-label>
+                <mat-select placeholder="Select a task" (selectionChange)="onChangeTask()"  [(ngModel)]="ScheduledTaskAdd.Task_ID" [disabled]="!disableTask.value"  name="task_Description" formControlName = "task_Description" required [ngModelOptions]="{standalone: true}">
+                    <option value="" disabled selected>Choose</option>
+                    <mat-option *ngFor="let task of tasks" [value]="task.Task_ID" >
+                        {{ task.Task_Description }}
+                    </mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="form.controls.task_Description.errors?.required">Task selection is required </mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1" fxLayoutGap>
+            <mat-form-field appearance="outline">
+                <mat-label>Assign the task to a staff member</mat-label>
+                <mat-select placeholder="Select staff" [(ngModel)]="ScheduledTaskAdd.Staff_ID" name="staff_Name" formControlName = "staff_Name" [disabled]="!disableStaff.value" required [ngModelOptions]="{standalone: true}">
+                    <option value="" disabled selected>Choose</option>
+                    <mat-option *ngFor="let member of staff" [value]="member.Staff_ID">
+                        {{member.Staff_Name}}
+                    </mat-option>
+                </mat-select>
+                <!-- <mat-error *ngIf="form.controls.staff_Name.errors?.required">Staff selection is required </mat-error> -->
+            </mat-form-field>
+        </div>
+
+        <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+            <button mat-raised-button color="primary" (click)="ConfirmAddST()" class="endButton">Save</button>
+        </div>
+        <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+          <button mat-raised-button color="m-1" (click)="CancelAddST()" class="m-1">Back</button>
+          </div>
+        </form>
+        </mat-card>
+        </ng-container>

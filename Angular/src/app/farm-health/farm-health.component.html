@@ -1,0 +1,92 @@
+<h1 style="text-align: center;">Farm Health</h1>
+<button mat-raised-button color="primary" (click) = "Download(1)" class="m-1">Download Report</button>
+<button mat-raised-button color="primary" (click) = "Download(2)" class="m-1">Download History Report</button>
+
+
+<mat-card>
+    <mat-card-header  style="font-size: large;">                
+       Overall score: April
+    </mat-card-header>
+    <mat-card-content  fxLayoutAlign="center">
+        <ngx-gauge [type]="gaugeType" 
+        [value]=averageScore 
+        [label]="gaugeLabel"  
+        [append]="gaugeAppendText" [thick]="12" foregroundColor = "green">
+</ngx-gauge>
+    </mat-card-content>
+</mat-card>
+
+<mat-card>
+    <mat-card-header  style="font-size: large;">                
+       Individual Scores
+    </mat-card-header>
+    <mat-card-content  fxLayoutAlign="center">
+        <ngx-gauge [type]="gaugeType" 
+        [value]=vehicleScore 
+        [label]="vehicleLabel"  
+        [append]="gaugeAppendText" [thick]="12" foregroundColor = "green">
+</ngx-gauge>
+<ngx-gauge [type]="gaugeType" 
+        [value]= equipmentScore 
+        [label]="taskLabel"  
+        [append]="gaugeAppendText" [thick]="12" foregroundColor = "green">
+</ngx-gauge>
+<ngx-gauge [type]="gaugeType" 
+        [value]=maintenanceScore
+        [label]="maintLabel"  
+        [append]="gaugeAppendText" [thick]="12" foregroundColor = "green">
+</ngx-gauge>
+<ngx-gauge [type]="gaugeType" 
+        [value]=faultScore 
+        [label]="faultLabel"  
+        [append]="gaugeAppendText" [thick]="12" foregroundColor = "green">
+</ngx-gauge>
+    </mat-card-content>
+</mat-card>
+<br>
+<br>
+
+<div> 
+    <mat-card>
+        <mat-card-header fxLayoutAlign="center">                
+            <mat-card-subtitle><h2>Long term scores</h2></mat-card-subtitle>
+        </mat-card-header>
+        <div class="w-100 h-300p">
+            <ngx-charts-line-chart
+                [scheme]="colorScheme"
+                [results]="multi"
+                [gradient]="gradient"
+                [xAxis]="showXAxis"
+                [yAxis]="showYAxis"
+                [legend]="showLegend"
+                [showXAxisLabel]="showXAxisLabel"
+                [showYAxisLabel]="showYAxisLabel"
+                [xAxisLabel]="xAxisLabel"
+                [yAxisLabel]="yAxisLabel"
+                [autoScale]="autoScale"
+            >
+            </ngx-charts-line-chart>                  
+        </div>
+    </mat-card>
+</div>
+
+
+<br>
+<mat-card>
+    <mat-card-header style="font-size: large;">                
+       Suggestions to improve vehicle score:
+    </mat-card-header>
+    <br>
+    <mat-card-content  fxLayoutAlign="center">
+        <ul>
+            <li>Service vehicles on or before scheduled times</li>
+            <li>Fix vehicle faults as soon as possible</li>
+            <li>Service vehicles on or before scheduled times</li>
+            <li>Fix vehicle faults as soon as possible</li>
+            <li>Service vehicles on or before scheduled times</li>
+            <li>Fix vehicle faults as soon as possible</li>
+            <li>Service vehicles on or before scheduled times</li>
+            <li>Fix vehicle faults as soon as possible</li>
+        </ul>
+    </mat-card-content>
+</mat-card>

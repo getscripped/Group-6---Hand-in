@@ -1,0 +1,47 @@
+<mat-toolbar color="primary" class="tool">
+  <mat-toolbar-row>
+    <button mat-icon-button>
+      <mat-icon (click)="sidenav.toggle()">menu</mat-icon>
+    </button>
+    <h1 id="name">AgriLog</h1>
+    <span class="menu-spacer"></span>
+    <div>
+      <a mat-button [routerLink]="'/home'"><span class="material-icons">
+        home_work
+        </span>Home</a>
+      <a mat-button [routerLink]="'/profile'"><span class="material-icons">
+        account_circle
+        </span>Profile</a>
+      <a mat-button [routerLink]="'/register'"><span class="material-icons">
+        person_add
+        </span>Register</a>
+      <a mat-button [routerLink]="'/logout'"><span class="material-icons">
+        power_settings_new
+        </span>Logout</a>
+    </div>
+  </mat-toolbar-row>
+</mat-toolbar>
+
+
+<mat-sidenav-container class="side" layout="vertical" layout-fill flex>
+  <mat-sidenav #sidenav>
+    <mat-nav-list>
+      <br>
+      <a mat-list-item [routerLink]="'/home'"><span class="material-icons">
+        home_work
+        </span>Home</a>
+      <a mat-list-item [routerLink]="'/profile'"><span class="material-icons">
+        account_circle
+        </span>Profile</a>
+      <a mat-list-item [routerLink]="'/logout'"><span class="material-icons">
+        power_settings_new
+        </span>Logout</a>
+      <a mat-list-item (click)="sidenav.mode === 'side' || sidenav.close()" mat-list-item>Close</a>
+    </mat-nav-list>
+  </mat-sidenav>
+  <mat-sidenav-content>
+    <div style="height: 100vh;">
+      <router-outlet></router-outlet>
+    </div>
+  </mat-sidenav-content>
+</mat-sidenav-container>

@@ -1,0 +1,29 @@
+
+<h1>Your Tasks</h1>
+<div *ngIf="hideTable">
+<div fxLayout="column">
+    <div class="flex-p"> 
+        <div fxLayout="column" class="mat-elevation-z8">           
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">          
+            <ng-container matColumnDef="Task_Description">
+                <mat-header-cell *matHeaderCellDef> Task </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Task_Description}} </mat-cell>
+            </ng-container>       
+            <ng-container matColumnDef="Status_Description">
+                <mat-header-cell *matHeaderCellDef> Status </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Status_Description}} </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]"></mat-paginator>      
+    </div>
+</div>
+</div>
+<br>
+

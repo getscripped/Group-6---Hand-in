@@ -1,0 +1,89 @@
+<h1 style="text-align: center; font-size: xx-large;">Generate Audit Log</h1>
+          
+<ng-container>
+  <form [formGroup]= "form" ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="getReport()">
+<div style="margin: auto; text-align: center;">
+  <mat-card>
+    <mat-card-content>
+  <p>Please select the report parameters</p>
+  <br>
+  
+                
+    <mat-form-field appearance="outline" class="w-20">
+        <mat-label>Start Date</mat-label>
+        <input matInput [matDatepicker]="Start" placeholder="MM/DD/YYYY" formControlName="Start" [(ngModel)]= "param.startDate">
+        <mat-datepicker-toggle matSuffix [for]="Start"></mat-datepicker-toggle>
+        <mat-datepicker #Start></mat-datepicker>
+        <mat-error *ngIf= "form.controls.Start.errors?.required">Please select a date</mat-error>
+      </mat-form-field>
+
+  &nbsp;
+  &nbsp;
+  
+               
+    <mat-form-field class="w-20" appearance="outline">
+        <mat-label>End Date</mat-label>
+        <input matInput [matDatepicker] ="End" autocomplete="off" placeholder="MM/DD/YYYY" formControlName="End" [(ngModel)]= "param.endDate" >
+        <mat-datepicker-toggle matSuffix [for]="End">
+            </mat-datepicker-toggle>  
+            <mat-datepicker #End>
+            </mat-datepicker>   
+            <mat-error *ngIf= "form.controls.End.errors?.required">Please select a date</mat-error>     
+     </mat-form-field>
+    
+
+<br>
+
+
+</mat-card-content>
+</mat-card>
+<button mat-raised-button color="primary" class="m-1" type="submit" >Submit</button>
+&nbsp;
+&nbsp;
+<button mat-raised-button color="primary" class="m-1" disabled>Download</button>
+</div>
+</form>
+</ng-container>
+
+
+<div *ngIf="tableData">
+  
+      <table class="table" id="jsPDFTable">
+      
+              <caption id="cap">
+                  <strong>Audit Log for {{param.startDate}} to {{param.endDate}} </strong>
+              </caption>
+              <tr>
+                  <th id=tableHead>ID</th>
+                  <th id="tableHead">User ID</th>
+                  <th id="tableHead">Farm ID</th>
+                  <th id="tableHead">Action</th>
+                  <th id="tableHead">Date and Time</th>
+                  <th id="tableHead">Affected ID</th>
+              </tr>
+              <tr *ngFor="let log of tableData">
+                  <td id="row">
+                      {{log.Audit_Log_ID}}
+                  </td>
+                  <td id="row">
+                      {{log.User_ID}}
+                  </td>
+                  <td id="row">
+                    {{log.Farm_ID}}
+                  </td>
+                  <td id="row">
+                  {{log.User_Action}}
+                  </td>
+                  <td id="row">
+                  {{log.Action_DateTime}}
+                  </td>
+                  <td id="row">
+                  {{log.Affected_ID}}
+                  </td>
+                  </tr>
+
+          </table>
+      
+  </div>
+
+

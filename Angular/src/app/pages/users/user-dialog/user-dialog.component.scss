@@ -1,0 +1,20 @@
+.user-form{
+    .form-field-outer{
+        width: 280px;
+    }
+    .mat-radio-button{
+        margin-right: 12px;
+    }
+}
+.user-img{
+    position: relative;
+    text-align: center;
+    img{
+        border-radius: 50%;
+        width: 80px;
+        height: 80px;
+        &.blocked{
+            opacity: 0.5;
+        }
+    }
+}

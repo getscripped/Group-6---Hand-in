@@ -1,0 +1,26 @@
+<div class="matdialog">
+    <h1 mat-dialog-title>Add Section Type</h1>
+    <div mat-dialog-content>
+       <form [formGroup]="form" ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="addNewSectionType()">
+                <mat-label id="provideLabel">Please provide the following details:</mat-label>
+            <mat-card>
+                <mat-card-header fxLayoutAlign="center">                
+                   
+                </mat-card-header>
+                <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                    <mat-form-field>
+                        <input matInput placeholder="Section Type Description" [(ngModel)]="SectionTypeAdd.Section_Type_Description" name="Description" formControlName="Description" required >
+                        <mat-error *ngIf="form.controls.Description.errors?.required">Section Type Description is required </mat-error>
+                        <mat-error *ngIf="form.controls.Description.errors?.maxlength">Section Type Description cannot exceed 50 characters </mat-error>
+                    </mat-form-field> 
+                </mat-card-content>
+            </mat-card>
+    
+            <button mat-raised-button color="primary" id="endButton" class="m-1" >Save</button>
+            <button [mat-dialog-close]="true"  mat-raised-button color="primary" id="endButton" class="m-1" >Back</button>
+        </form>
+        
+    </div>
+    </div>
+    
+    

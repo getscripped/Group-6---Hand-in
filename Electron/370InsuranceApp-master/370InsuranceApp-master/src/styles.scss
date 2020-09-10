@@ -1,0 +1,68 @@
+@import "../node_modules/bulma/sass/utilities/initial-variables";
+@import "../node_modules/bulma/sass/utilities/functions";
+@import '~@angular/material/prebuilt-themes/purple-green.css';
+
+@import "~bulma";
+
+
+html, body {
+  margin: 0;
+  padding: 0;
+  display:inline-block;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+  font-family: Arial, Helvetica, sans-serif;
+  background: url(./assets/background.jpg) no-repeat center fixed;
+  -webkit-background-size:cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-repeat:no-repeat;
+  background-size:cover;
+}
+
+.container{
+  height: 100%;
+  display: inline-flex;
+  justify-content: center;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+
+  background: url(./assets/background.jpg) no-repeat center fixed;
+  -webkit-background-size:cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-repeat:no-repeat;
+  background-size:cover;
+
+  .title {
+    color: white;
+    margin:0vh;
+    padding:0vh;
+  }
+
+  a {
+    color: #fff !important;
+    text-transform: uppercase;
+    text-decoration: none;
+    background:green;
+    padding: 10px;
+    border-radius: 5px;
+    display: inline-block;
+    border: none;
+    transition: all 0.4s ease 0s;
+
+    &:hover {
+      background: #fff;
+      color: grey !important;
+      letter-spacing: 1px;
+      -webkit-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+      -moz-box-shadow: 0px 5px 40px -10px rgba(0,0,0,0.57);
+      box-shadow: 5px 40px -10px rgba(0,0,0,0.57);
+      transition: all 0.4s ease 0s;
+    }
+  }
+}
+
+

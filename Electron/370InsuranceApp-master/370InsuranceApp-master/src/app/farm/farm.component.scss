@@ -1,0 +1,40 @@
+.table{
+  width:100%;
+  overflow:hidden;
+  border:1px solid white;
+}
+
+.mat-column {
+  word-wrap: break-word !important;
+  white-space: unset !important;
+  flex: 0 0 5% !important;
+  width: 40% !important;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  border:1px solid white;
+ 
+  -ms-hyphens: auto;
+  -moz-hyphens: auto;
+  -webkit-hyphens: auto;
+  hyphens: auto;
+  overflow: hidden;
+}
+
+.mat-cell{
+  word-break: break-word;
+  overflow: hidden;
+  width: 100px;
+  white-space: normal;
+  display: inline-flex;
+}
+
+
+mat-header-cell{
+  background-color: rgb(48, 139, 48);
+  font-size: 16px;
+}
+
+mat-card{
+  width: 100%;
+  align-items: center;
+}

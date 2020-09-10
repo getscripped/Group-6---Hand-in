@@ -1,0 +1,90 @@
+<h1 style="text-align: center;">Vehicle Types</h1>
+<button class="addVT" mat-raised-button color="primary" (click) = "AddVehicleType()" >
+    <mat-icon>add</mat-icon>Add Vehicle Type</button>
+
+<div fxLayout="column">
+    <div class="flex-p" > 
+        <div fxLayout="column" class="search" >           
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">       
+            <ng-container matColumnDef="Type_ID">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Vehicle_Type_ID}} </mat-cell>
+            </ng-container>         
+            <ng-container matColumnDef="Type">
+                <mat-header-cell *matHeaderCellDef> Vehicle Type </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Vehicle_Type_Description}} </mat-cell>
+            </ng-container>     
+
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element" >
+                    <button mat-fab class="m-1"  style="color: green; background-color:rgb(51, 49, 49)" (click) ='getTypeDetail(element.Vehicle_Type_ID)'>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    
+               </mat-cell>
+            </ng-container>
+
+            
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]"></mat-paginator>      
+    </div>
+</div>
+<br>
+
+<!-- <ng-container *ngIf="show">
+<form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="PutVehicleType()">
+           
+           
+    
+            <mat-card>
+                <mat-card-header fxLayoutAlign="center">                
+                   
+                </mat-card-header>
+                <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                    <mat-form-field>
+                        <input matInput placeholder="Type" [(ngModel)]="TypeEdit"   name="PurchMileage" required>
+                    </mat-form-field>
+                                       
+                </mat-card-content>
+            </mat-card>
+        
+    <button mat-raised-button color="primary" class="m-1" (click)="CancelEditVT()">Back</button>
+    <button mat-raised-button color="primary" class="m-1" (click)="ConfirmEditVT()">Save Changes</button>
+  </form>
+</ng-container>
+
+
+
+
+
+
+<ng-container *ngIf="showAdd">
+    <form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="AddNewVehicleType()">
+            
+        <mat-card>
+            <mat-card-header fxLayoutAlign="center">                
+               
+            </mat-card-header>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <mat-form-field>
+                    <input matInput placeholder="Type"  name="PurchMileage" [(ngModel)] = "addType" required>
+                </mat-form-field>
+                                   
+            </mat-card-content>
+        </mat-card>
+    
+       
+
+        <button mat-raised-button color="primary" class="m-1" (click)="CancelAddVT">Back</button>
+        <button mat-raised-button color="primary" class="m-1" (click)="ConfirmAddVT">Save</button>
+      </form>
+    </ng-container> -->

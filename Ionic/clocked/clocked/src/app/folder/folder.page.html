@@ -1,0 +1,27 @@
+
+<ion-header [translucent]="true">
+  <ion-toolbar >
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{farmName}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">{{farmName}}</ion-title>
+      
+    </ion-toolbar>
+  </ion-header> 
+  <div class="logout">
+    <br><a [routerLink]="['login']">Login</a>  
+    <br><a [routerLink]="['logout']">Logout</a>
+
+    </div>
+  <div id="container">
+    <img src="assets/img/agrilog.png">
+  </div>
+ 
+</ion-content>

@@ -1,0 +1,29 @@
+<ion-content>
+    <div >
+      <br>
+      <ion-button class="home" (click)="home()">
+          <ion-icon  slot="icon-only" name="home" ></ion-icon>
+        </ion-button>  
+      <h1> Faults </h1>
+      <ion-grid >
+           <ion-row >
+             <ion-col class="cell-heading">Fault Description</ion-col>
+             <ion-col size="3" class="cell-heading">Status</ion-col>
+           </ion-row>
+           <ion-row *ngFor="let fault of faultList">
+             <ion-col  (click)="faultDetails(fault.Fault_ID)" class="cell">{{fault.Fault_Description}} </ion-col>
+             <ion-col size="3" class="status">
+                <ion-checkbox 
+                [checked]="completed(fault.Fault_ID)"
+               (ionChange)="isChecked(fault.FaultStaff_Id, $event)"></ion-checkbox>
+             </ion-col>
+           </ion-row>
+          
+         </ion-grid>
+         
+             <ion-button class="backButton" (click)="backButton()">Back</ion-button>
+           
+         </div>
+    
+        </ion-content>
+    

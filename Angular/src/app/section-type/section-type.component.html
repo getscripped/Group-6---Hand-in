@@ -1,0 +1,98 @@
+<h1 style="text-align: center;">Section Types</h1>
+<button mat-raised-button color="primary" (click) = "AddSectionType()" class="addSectionType">
+    <mat-icon>add</mat-icon> Add Section Type</button>
+
+<div fxLayout="column" *ngIf ="showTable">
+    <div class="flex-p"> 
+        <div fxLayout="column" class="search">           
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table #table [dataSource]="dataSource" class="mat-elevation-z8">       
+            <ng-container matColumnDef="Section_Type_ID">
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Section_Type_ID}} </mat-cell>
+            </ng-container>         
+            <ng-container matColumnDef="Section_Type_Description">
+                <mat-header-cell *matHeaderCellDef> Description </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Section_Type_Description}} </mat-cell>
+            </ng-container>     
+
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element" >
+                    <button mat-fab class="m-1" style="color: green; background-color:rgb(51, 49, 49)" (click) ='getSectionTypeDetail(element.Section_Type_ID)'>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-fab class="m-1" style="color: red; background-color: rgb(51, 49, 49);" (click)= "deleteSectionType(element.Section_Type_ID)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+               </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="5" [pageSizeOptions]="[5, 10]"></mat-paginator>      
+    </div>
+</div>
+<br>
+
+
+<ng-container *ngIf="show" fxLayoutAlign="center" >
+    <mat-card class="p-0" *ngIf="canEdit" >  
+    <div class="bg-primary text-center py-1">       
+        <h1>Edit Section Type:</h1> 
+    </div> 
+
+        
+    <form class="addForm" [formGroup]="form" name="OwnerSub" #userForm="ngForm" novalidate (ngSubmit)="PutSectionType()" fxLayout="row wrap"  >
+        <h3 fxFlex.gt-sm="100" fxLayoutAlign="center"><u>Please provide the following section type details:</u></h3>
+
+        <mat-card-content fxLayout="column" fxLayoutAlign="center">
+            <mat-form-field>
+                <input matInput placeholder="Description"  name="Description" [(ngModel)]="SectionTypeEdit.Section_Type_Description" required formControlName="Description" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf= "form.controls.Description.errors?.required">Please enter a description</mat-error>
+                <mat-error *ngIf= "form.controls.Description.errors?.maxlength">Description is limited to 50 characters</mat-error>
+            </mat-form-field>
+        </mat-card-content>
+
+    <button mat-raised-button color="primary" class="m-1" >Save</button>
+        &nbsp;
+        &nbsp;
+        <button mat-raised-button color="primary" class="m-1" (click)="ShowTable()">Cancel</button>
+  </form>
+  </mat-card>
+</ng-container>
+
+
+
+<ng-container *ngIf="showAdd" fxLayoutAlign="center" >
+    <mat-card class="p-0">  
+    <div class="bg-primary text-center py-1">       
+        <h1>Add Section Type:</h1> 
+    </div> 
+
+        
+    <form class="addForm" [formGroup]="form" name="OwnerSub" #userForm="ngForm" novalidate (ngSubmit)="addNewSectionType()" fxLayout="row wrap"  >
+        <h3 fxFlex.gt-sm="100" fxLayoutAlign="center"><u>Please provide the following section type details:</u></h3>
+            <mat-card-content fxLayout="column" fxLayoutAlign="center">
+                <br>
+                <mat-form-field>
+                    <input matInput placeholder="Description" [(ngModel)]="SectionTypeAdd.Section_Type_Description" name="Description" required formControlName="Description">
+                    <mat-error *ngIf= "form.controls.Description.errors?.required">Please enter a description</mat-error>
+                    <mat-error *ngIf= "form.controls.Description.errors?.maxlength">Description is limited to 50 characters</mat-error>
+                </mat-form-field><br>
+            </mat-card-content>
+        <br>
+        <div class="buttons">   
+        <button mat-raised-button color="primary" class="m-1" type="submit" >Save</button>
+        &nbsp;
+        &nbsp;
+        <button mat-raised-button color="primary" class="m-1" (click)="ShowTable()">Cancel</button>
+    </div>
+      </form>
+    </mat-card>
+    </ng-container>
+

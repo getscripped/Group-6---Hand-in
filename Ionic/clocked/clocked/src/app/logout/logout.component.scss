@@ -1,0 +1,32 @@
+.loginClass{
+    text-align: center;
+    color: var(--ion-color-primary);
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+.loginInput{
+    color: var(--ion-color-primary);
+    border: 1pt solid var(--ion-color-primary); 
+    width:70%;
+    margin-left: 15%;
+}
+
+h1{
+    background-color: rgb(32, 32, 32);
+    padding: 5%;
+    
+    color:rgb(138, 138, 138)
+}
+.image{
+    width:60%;
+    margin-top: 25%;
+}
+
+ion-label{
+    color:rgb(138, 138, 138)
+}
+
+.error{
+    font-size: 9pt;
+    color: red;
+}

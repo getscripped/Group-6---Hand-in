@@ -1,0 +1,464 @@
+<h1 style="text-align: center;">Vehicles</h1>
+&nbsp;&nbsp;
+<button mat-raised-button color="primary" (click) = "AddVehicle()" class="buttons"><mat-icon>add</mat-icon> Add Vehicle</button>&nbsp;
+<button mat-raised-button color="primary" (click) = "LoadTypes()" class="buttons"><mat-icon>commute</mat-icon> Vehicle Types</button>&nbsp;&nbsp;
+<button mat-raised-button color="primary" (click) = "Download()" class="buttons">
+    <mat-icon class="tooltiptext">save_alt</mat-icon> Download List</button>
+<div fxLayout="column">
+    <div class="flex-p" *ngIf = "showtable"> 
+        <div fxLayout="column" class="mat-elevation-z8" >           
+            <mat-form-field class="p-1">
+                <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Type to filter all columns">
+            </mat-form-field> 
+        </div>
+        <mat-table id="table" #table [dataSource]="dataSource" class="mat-elevation-z8">       
+            <ng-container matColumnDef="Vehicle_ID" >
+                <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                <mat-cell *matCellDef="let element" > {{element.Vehicle_ID}} </mat-cell>
+            </ng-container>         
+            <ng-container matColumnDef="Vehicle_Type_Description">
+                <mat-header-cell *matHeaderCellDef> Type </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Vehicle_Type_Description}} </mat-cell>
+            </ng-container>     
+            <ng-container matColumnDef="Model_Description">
+                <mat-header-cell *matHeaderCellDef> Model </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Model_Description}} </mat-cell>
+            </ng-container>        
+            <ng-container matColumnDef="Section_Name">
+                <mat-header-cell *matHeaderCellDef> Section </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Section_Name}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Infrastructure_Name">
+                <mat-header-cell *matHeaderCellDef> Infrastructure </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Infrastructure_Name}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Vehicle_Mileage_Current">
+                <mat-header-cell *matHeaderCellDef> Curr. Mileage </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Vehicle_Mileage_Current}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Vehicle_Registration_Number">
+                <mat-header-cell *matHeaderCellDef> Reg no </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Vehicle_Registration_Number}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="is_Active">
+                <mat-header-cell *matHeaderCellDef> Active </mat-header-cell>
+                <mat-cell *matCellDef="let element"> {{element.Is_Active}} </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Mileage">
+                <mat-header-cell *matHeaderCellDef> Set Mileage </mat-header-cell>
+                <mat-cell *matCellDef="let element">  
+                    <button mat-raised-button color="primary"  (click) = "Prompt(element.Vehicle_ID)">Mileage</button>
+                 </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Actions">
+                <mat-header-cell *matHeaderCellDef> Actions </mat-header-cell>
+                <mat-cell *matCellDef="let element" >
+                    <button mat-fab class="m-1"  style="color: green; background-color:rgb(51, 49, 49)" (click) ='getVehicleDetail(element.Vehicle_ID)'>
+                        <mat-icon>edit</mat-icon>
+                    </button>
+                    <button mat-fab class="m-1"  style="color: red; background-color:rgb(51, 49, 49)" (click)="deleteVehicle(element.Vehicle_ID)">
+                        <mat-icon>delete_forever</mat-icon>
+                    </button>
+                   
+                    
+               </mat-cell>
+            </ng-container>
+
+            
+
+
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>  
+        <mat-paginator #paginator [pageSize]="15" [pageSizeOptions]="[15, 20]"></mat-paginator>      
+    </div>
+</div>
+<br>
+
+<ng-container *ngIf="show">
+    <mat-card class="p-0" >  
+        <div class="bg-primary text-center py-1">       
+            <h1>Edit Vehicle:</h1> 
+        </div> 
+        <form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate  [formGroup] = "form" fxLayout="row wrap">
+            <h3  fxFlex.gt-sm="100" fxLayoutAlign="center"><u>Please provide the following details:</u></h3>
+           
+        
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Section</mat-label>
+                        <mat-select placeholder="Vehicle section location" [(ngModel)]="VehicleEdit.Section_ID" name="Section" required formControlName = "Section" [ngModelOptions]="{standalone: true}">
+                            <option value="" disabled selected>Choose</option>
+                            <mat-option *ngFor="let type of sections" [value]="type.Section_ID">
+                                {{type.Section_Name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+            </div>
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Infrastructure</mat-label>
+                        <mat-select placeholder="Vehicle infrastructure location" [(ngModel)]="VehicleEdit.Infrastructure_ID" name="Infras" required formControlName = "Infras" [ngModelOptions]="{standalone: true}">
+                            <option value="" disabled selected>Choose</option>
+                            <mat-option *ngFor="let type of infrastructures" [value]="type.Infrastructure_ID">
+                                {{type.Infrastructure_Name}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vehicle Type</mat-label>
+                        <mat-select placeholder="Vehicle Type" [(ngModel)]="VehicleEdit.Vehicle_Type_ID" name="Type" required formControlName = "Type" [ngModelOptions]="{standalone: true}">
+                            <option value="" disabled selected>Choose</option>
+                            <mat-option *ngFor="let type of types" [value]="type.Vehicle_Type_ID">
+                                {{type.Vehicle_Type_Description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vehicle Make</mat-label>
+                        <mat-select placeholder="Make" [(ngModel)]="VehicleEdit.Make_ID" name="Make_ID" required formControlName = "Make" [ngModelOptions]="{standalone: true}">
+                            <option value="" disabled selected>Choose</option>
+                            <mat-option *ngFor="let type of makes" [value]="type.Make_ID">
+                                {{type.Make_Description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+        
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vehicle Model</mat-label>
+                        <mat-select placeholder="Model" [(ngModel)]="VehicleEdit.Model_ID" name="Model" required formControlName = "Model" [ngModelOptions]="{standalone: true}">
+                            <option value="" disabled selected>Choose</option>
+                            <mat-option *ngFor="let type of models" [value]="type.Model_Id">
+                                {{type.Model_Description}}
+                            </mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+    
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap >
+                    <mat-form-field appearance="outline" style="width: 35%;">
+                        <mat-label>Year</mat-label>
+                        <input matInput placeholder="Year" [(ngModel)]="VehicleEdit.Vehicle_Year" name="Year" required formControlName = "Year" [ngModelOptions]="{standalone: true}" maxlength="4">
+                        <mat-error *ngIf = "form.controls.Year.errors?.required">Year is required</mat-error>
+                        <mat-error *ngIf = "form.controls.Year.errors?.maxlength">Year cannot exceed 4 numbers</mat-error>
+                    </mat-form-field>
+                                       
+              </div>
+    
+              <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Colour</mat-label>
+                    <input matInput placeholder="Colour" [(ngModel)]="VehicleEdit.Vehicle_Colour" name="Color" required formControlName = "Color" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.Color.errors?.required">Colour is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Color.errors?.maxlength">Colour cannot exceed 16 characters</mat-error>
+                </mat-form-field>
+                                   
+            </div>
+    
+        
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline" >
+                        <mat-label>Registration Number</mat-label>
+                        <input  matInput placeholder="Registration" [(ngModel)]="VehicleEdit.Vehicle_Registration_Number" name="Registration" required formControlName = "Registration" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.Registration.errors?.required">Registration is required</mat-error>
+                        <mat-error *ngIf = "form.controls.Registration.errors?.maxlength">Registration cannot exceed 15 characters</mat-error>
+                    </mat-form-field>
+                                       
+                </div>
+                
+    
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Date of Purchase</mat-label>
+                        <input matInput [matDatepicker] ="picker"autocomplete="off"  placeholder="MM/DD/YYYY" formControlName="PurchaseDate" type="text" [(ngModel)]="VehicleEdit.Vehicle_Date_Of_Purchase" [ngModelOptions]="{standalone: true}" required>
+                        
+                        <mat-error *ngIf = "form.controls.PurchaseDate.errors?.required">PurchaseDate is required</mat-error>
+                        <mat-error *ngIf = "form.controls.PurchaseDate.errors?.maxlength">Purchase Date cannot exceed 10 characters</mat-error>
+                        <mat-datepicker-toggle matSuffix [for]="picker">
+                        </mat-datepicker-toggle>  
+                        <mat-datepicker #picker>
+                        <mat-error ></mat-error>   
+                        </mat-datepicker>       
+                    </mat-form-field>
+                                       
+                </div>
+    
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Purchase Price</mat-label>
+                        <input matInput placeholder="Purchase Price" [(ngModel)]="VehicleEdit.Vehicle_Purchase_Price" name="Price" required formControlName = "Price" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.Price.errors?.required">Price is required</mat-error>
+                        <mat-error *ngIf = "form.controls.Price.errors?.maxlength">Price cannot exceed 6 characters</mat-error>
+                    </mat-form-field>
+                                       
+              </div>
+        
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Purchase Mileage</mat-label>
+                        <input matInput placeholder="Mileage on purchase" [(ngModel)]="VehicleEdit.Vehicle_Mileage_Date_Of_Purchase" name="PurchMileage" required formControlName = "PurchMileage" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.PurchMileage.errors?.required">Purchase Mileage is required</mat-error>
+                        <mat-error *ngIf = "form.controls.PurchMileage.errors?.maxlength">Purchase Mileage cannot exceed 8 characters</mat-error>
+                    </mat-form-field>
+                                       
+              </div>
+              
+              
+              <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Current Mileage</mat-label>
+                        <input matInput placeholder="Current Mileage" [(ngModel)]="VehicleEdit.Vehicle_Mileage_Current" name="CurrMileage" required formControlName = "CurrMileage" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.CurrMileage.errors?.required">Current Mileage is required</mat-error>
+                        <mat-error *ngIf = "form.controls.CurrMileage.errors?.maxlength">Current Mileage cannot exceed 8 characters</mat-error>
+                    </mat-form-field>
+                                       
+              </div>
+        
+              
+        
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Last Service Mileage</mat-label>
+                        <input matInput placeholder="Last Service mileage" [(ngModel)]="VehicleEdit.Vehicle_Last_Service_Mileage" type="number" name="LastService" required formControlName = "LastService" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.LastService.errors?.required">Last Service Mileage is required</mat-error>
+                        <mat-error *ngIf = "form.controls.LastService.errors?.maxlength">Last Service Mileage cannot exceed 8 characters</mat-error>
+                    </mat-form-field>
+                                       
+                </div>
+    
+                <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Mileage intervals between services</mat-label>
+                        <input matInput placeholder="Service interval" [(ngModel)]="VehicleEdit.Vehicle_Service_Intervals" name="Interval" type="number" required formControlName = "Interval" [ngModelOptions]="{standalone: true}">
+                        <mat-error *ngIf = "form.controls.Interval.errors?.required">Interval Mileage is required</mat-error>
+                        <mat-error *ngIf = "form.controls.Interval.errors?.maxlength">Interval Mileage cannot exceed 8 charachters</mat-error>
+                    </mat-form-field>
+                                       
+                </div>
+
+              <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                    <mat-form-field appearance="outline">
+                        <mat-label>Vehicle Status</mat-label>
+                        <input matInput placeholder="Status" [(ngModel)]="VehicleEdit.Is_Active" name="Active" required [ngModelOptions]="{standalone: true}">
+                    </mat-form-field>
+                                       
+              </div>
+              <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+            <button mat-raised-button color="primary" class="m-1" (click)="CancelEditVehicle()">Back</button>
+            &nbsp;&nbsp;&nbsp;&nbsp;
+        </div>
+        <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"  fxLayoutGap>
+            <button mat-raised-button color="primary" class="m-1" (click)="ConfirmEditVehicle()">Save</button>
+            </div>
+            </form>
+  </mat-card>
+  
+</ng-container>
+
+
+
+
+
+
+<ng-container *ngIf="showAdd">
+    <mat-card class="p-0" >  
+        <div class="bg-primary text-center py-1">       
+            <h1>Add Vehicle:</h1> 
+        </div> 
+    <form ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate  [formGroup] = "form" fxLayout="row wrap">
+        <h3  fxFlex.gt-sm="100" fxLayoutAlign="center"><u>Please provide the following details:</u></h3>
+       
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Section</mat-label>
+                    <mat-select (selectionChange)="sectionSelected()" placeholder="Vehicle section location" [(value)]="sectionID" [(ngModel)]="VehicleAdd.Section_ID" name="Section" required formControlName = "Section" [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let type of sections" [value]="type.Section_ID">
+                            {{type.Section_Name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+        </div>
+
+        <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Infrastructure</mat-label>
+                    <mat-select placeholder="Vehicle infrastructure location" [disabled]="!selectionMade" [(ngModel)]="VehicleAdd.Infrastructure_ID" name="Infras" required formControlName = "Infras" [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let type of infrastructures" [value]="type.Infrastructure_ID">
+                            {{type.Infrastructure_Name}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Type</mat-label>
+                    <mat-select placeholder="Vehicle Type" [(ngModel)]="VehicleAdd.Vehicle_Type_ID" name="Type" required formControlName = "Type" [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let type of types" [value]="type.Vehicle_Type_ID">
+                            {{type.Vehicle_Type_Description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+            
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Make</mat-label>
+                    <mat-select placeholder="Make" [(ngModel)]="VehicleAdd.Make_ID" name="Make_ID" required formControlName = "Make" [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let type of makes" [value]="type.Make_ID">
+                            {{type.Make_Description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Model</mat-label>
+                    <mat-select placeholder="Model" [(ngModel)]="VehicleAdd.Model_ID" name="Model" required formControlName = "Model" [ngModelOptions]="{standalone: true}">
+                        <option value="" disabled selected>Choose</option>
+                        <mat-option *ngFor="let type of models" [value]="type.Model_Id">
+                            {{type.Model_Description}}
+                        </mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="100" class="p-1"fxLayoutGap >
+                <mat-form-field appearance="outline" style="width: 35%;">
+                    <mat-label>Year</mat-label>
+                    <input matInput placeholder="Year" [(ngModel)]="VehicleAdd.Vehicle_Year" name="Year" required formControlName = "Year" [ngModelOptions]="{standalone: true}" maxlength="4">
+                    <mat-error *ngIf = "form.controls.Year.errors?.required">Year is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Year.errors?.maxlength">Year cannot exceed 4 numbers</mat-error>
+                </mat-form-field>
+                                   
+          </div>
+
+          <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+            <mat-form-field appearance="outline">
+                <mat-label>Vehicle Colour</mat-label>
+                <input matInput placeholder="Colour" [(ngModel)]="VehicleAdd.Vehicle_Colour" name="Color" required formControlName = "Color" [ngModelOptions]="{standalone: true}">
+                <mat-error *ngIf = "form.controls.Color.errors?.required">Colour is required</mat-error>
+                <mat-error *ngIf = "form.controls.Color.errors?.maxlength">Colour cannot exceed 16 characters</mat-error>
+            </mat-form-field>
+                               
+        </div>
+
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline" >
+                    <mat-label>Registration Number</mat-label>
+                    <input  matInput placeholder="Registration" [(ngModel)]="VehicleAdd.Vehicle_Registration_Number" name="Registration" required formControlName = "Registration" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.Registration.errors?.required">Registration is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Registration.errors?.maxlength">Registration cannot exceed 15 characters</mat-error>
+                </mat-form-field>
+                                   
+            </div>
+            
+
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Date of Purchase</mat-label>
+                    <input matInput [matDatepicker] ="picker"autocomplete="off"  placeholder="MM/DD/YYYY" formControlName="PurchaseDate" type="text" [(ngModel)]="VehicleAdd.Vehicle_Date_Of_Purchase" [ngModelOptions]="{standalone: true}" required>
+                    
+                    <mat-error *ngIf = "form.controls.PurchaseDate.errors?.required">PurchaseDate is required</mat-error>
+                    <mat-error *ngIf = "form.controls.PurchaseDate.errors?.maxlength">Purchase Date cannot exceed 10 characters</mat-error>
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>  
+                    <mat-datepicker #picker>
+                    <mat-error ></mat-error>   
+                    </mat-datepicker>       
+                </mat-form-field>
+                                   
+            </div>
+
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Purchase Price</mat-label>
+                    <input matInput placeholder="Purchase Price" [(ngModel)]="VehicleAdd.Vehicle_Purchase_Price" name="Price" required formControlName = "Price" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.Price.errors?.required">Price is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Price.errors?.maxlength">Price cannot exceed 6 characters</mat-error>
+                </mat-form-field>
+                                   
+          </div>
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Purchase Mileage</mat-label>
+                    <input matInput placeholder="Mileage on purchase" [(ngModel)]="VehicleAdd.Vehicle_Mileage_Date_Of_Purchase" name="PurchMileage" required formControlName = "PurchMileage" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.PurchMileage.errors?.required">Purchase Mileage is required</mat-error>
+                    <mat-error *ngIf = "form.controls.PurchMileage.errors?.maxlength">Purchase Mileage cannot exceed 8 characters</mat-error>
+                </mat-form-field>
+                                   
+          </div>
+          
+          
+          <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Current Mileage</mat-label>
+                    <input matInput placeholder="Current Mileage" [(ngModel)]="VehicleAdd.Vehicle_Mileage_Current" name="CurrMileage" required formControlName = "CurrMileage" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.CurrMileage.errors?.required">Current Mileage is required</mat-error>
+                    <mat-error *ngIf = "form.controls.CurrMileage.errors?.maxlength">Current Mileage cannot exceed 8 characters</mat-error>
+                </mat-form-field>
+                                   
+          </div>
+    
+          
+    
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Last Service Mileage</mat-label>
+                    <input matInput placeholder="Last Service mileage" [(ngModel)]="VehicleAdd.Vehicle_Last_Service_Mileage" type="number" name="LastService" required formControlName = "LastService" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.LastService.errors?.required">Last Service Mileage is required</mat-error>
+                    <mat-error *ngIf = "form.controls.LastService.errors?.maxlength">Last Service Mileage cannot exceed 8 characters</mat-error>
+                </mat-form-field>
+                                   
+            </div>
+
+            <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Mileage intervals between services</mat-label>
+                    <input matInput placeholder="Service interval" [(ngModel)]="VehicleAdd.Vehicle_Service_Intervals" name="Interval" type="number" required formControlName = "Interval" [ngModelOptions]="{standalone: true}">
+                    <mat-error *ngIf = "form.controls.Interval.errors?.required">Interval Mileage is required</mat-error>
+                    <mat-error *ngIf = "form.controls.Interval.errors?.maxlength">Interval Mileage cannot exceed 8 charachters</mat-error>
+                </mat-form-field>
+                                   
+            </div>
+    
+           
+    
+            
+    
+            
+    
+          <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="50" class="p-1"fxLayoutGap>
+                <mat-form-field appearance="outline">
+                    <mat-label>Vehicle Status</mat-label>
+                    <input matInput placeholder="Status" [(ngModel)]="VehicleAdd.is_Active" name="Active" required [ngModelOptions]="{standalone: true}">
+                </mat-form-field>
+                                   
+          </div>
+          <div fxLayoutAlign="right" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1" fxLayoutGap>
+        <button mat-raised-button color="primary" class="m-1" (click)="CancelAddVehicle()">Back</button>
+        &nbsp;&nbsp;&nbsp;&nbsp;
+    </div>
+    <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="50" fxFlex.sm="50" class="p-1"  fxLayoutGap>
+        <button mat-raised-button color="primary" class="m-1" (click)="ConfirmAddVehicle()">Save</button>
+        </div>
+      </form>
+      </mat-card>
+    </ng-container>

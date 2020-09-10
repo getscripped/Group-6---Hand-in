@@ -1,0 +1,38 @@
+<h1 style="text-align: center;">Generate Section Report</h1>
+
+<ng-container>
+  <form [formGroup]= "form" ng-show="show" name="OwnerSub" #userForm="ngForm" ngNativeValidate (ngSubmit)="generateReport()">
+<div style="margin: auto; text-align: center;">
+  <mat-card class ="report">
+  <div fxLayoutAlign="center" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1" fxLayoutGap>
+  <h3 fxFlex.gt-sm="100" fxLayoutAlign="center">Please select the report parameters by Section:</h3>
+  
+</div> <br> 
+  
+                
+  
+    <div fxLayoutAlign="left" fxFlex="100" fxFlex.gt-sm="100" fxFlex.sm="100" class="p-1" fxLayoutGap>
+      <mat-form-field appearance="outline">
+        <mat-label>Section</mat-label>
+        <mat-select placeholder="Section" [(ngModel)]="param.select" name="section" formControlName="section" >
+            <mat-option *ngFor="let section of sectionsList" [value]="section.Section_ID">
+                {{section.Section_Name}}
+            </mat-option>
+        </mat-select>
+        <mat-error *ngIf= "form.controls.section.errors?.required">Please select a section</mat-error>
+    </mat-form-field>
+    </div>
+
+
+<br>
+
+
+
+</mat-card>
+<button mat-raised-button color="primary" class="m-1" type="submit" >Submit</button>
+&nbsp;
+&nbsp;
+<button mat-raised-button color="primary" class="m-1" disabled>Download</button>
+</div>
+</form>
+</ng-container>
